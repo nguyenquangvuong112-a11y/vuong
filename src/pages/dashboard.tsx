@@ -2,8 +2,8 @@ import { Toaster } from "react-hot-toast";
 import { Link, Route, Routes } from "react-router-dom";
 import { Signin } from "./signin";
 import { Signup } from "./signup";
-import Userlist from "./userlist";
-import { Add } from "./add";
+import CateList from "./list";
+import Addcategories from "./formAdd";
 const Dashboard = () => {
     return(
         <>
@@ -17,10 +17,10 @@ const Dashboard = () => {
             <Link to="#" className="hover:text-gray-200">
               Trang chủ
             </Link>
-            <Link to="/userlist" className="hover:text-gray-200">
+            <Link to="/categories" className="hover:text-gray-200">
               Danh sách
             </Link>
-            <Link to="/add" className="hover:text-gray-200">
+            <Link to="/addcategories" className="hover:text-gray-200">
               Thêm mới
             </Link>
           </div>
@@ -43,8 +43,8 @@ const Dashboard = () => {
       <Routes>
         <Route path="/signin" element={<Signin/>}></Route>
         <Route path="/signup" element={<Signup/>}></Route>
-        <Route path="/userlist" element={<Userlist/>}></Route>
-        <Route path="/add" element={<Add/>}></Route>
+        <Route path="/categories" element={<CateList/>}></Route>
+        <Route path="/addcategories" element={<Addcategories/>}></Route>
 
       </Routes>
 
