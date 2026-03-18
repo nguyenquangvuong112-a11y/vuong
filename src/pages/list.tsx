@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Button, Popconfirm, Table } from "antd";
+import { Button, Popconfirm, Table, Input  } from "antd";
 import toast from "react-hot-toast";
 import type { Categories } from "../types/types"
 import axios from "axios";
+import { useState } from "react";
 
 
 const getCate = async () => {
@@ -10,6 +11,7 @@ const getCate = async () => {
     return res.data
 }
 const CateList = () => {
+    const [search, setSearch] = useState("")
     const { data, isLoading, isError } = useQuery<Categories[]>({
         queryKey: ["categories"],
         queryFn: getCate
@@ -40,9 +42,14 @@ const CateList = () => {
             dataIndex: "title",
             align: "center"
         },
-        {
+        {  
             title: "Description",
             dataIndex: "description",
+            align: "center"
+        },
+        {
+            title: "Date",
+            dataIndex: "date",
             align: "center"
         },
         {
@@ -65,7 +72,10 @@ const CateList = () => {
         }
     ]
     return (
-        <Table columns={column} dataSource={data} loading={isLoading} rowKey="id" pagination={{ pageSize: 5 }} bordered></Table>
+        <div>
+            <Input placeholder="tìm" onChange={(e) => setSearch(e.target.value)} style={{width:"50%", border: "1px solid black", margin: "30px", padding: "10px",}}/>
+        <Table columns={column} dataSource={data?.filter(item => item.title.toLowerCase().includes(search.toLowerCase()))} loading={isLoading} rowKey="id" pagination={{ pageSize: 5 }} bordered></Table>
+        </div>
     )
 }
 export default CateList

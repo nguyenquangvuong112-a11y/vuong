@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import toast from "react-hot-toast"
-import {Form, Input,Checkbox,Button} from "antd"
+import {Form, Input,Checkbox,Button, DatePicker} from "antd"
 import type { Categories } from "../types/types"
 import { useNavigate } from "react-router-dom"
 const Addcategories = () =>{
@@ -20,8 +20,12 @@ const Addcategories = () =>{
             toast.error("Them that bai")
         }
     })
-    const onFinish = (values: Categories)=>{
-        mutation.mutate(values)
+    const onFinish = (values: any)=>{
+        const newData = {
+            ...values,
+            date: values.date.format("DD/MM/YYYY")
+        }
+        mutation.mutate(newData)
     }
     
     return(
@@ -30,12 +34,16 @@ const Addcategories = () =>{
             <Form.Item label="Title" name="title" rules={[{required: true, message: "title khong de trong"}]}>
                 <Input placeholder="Title"></Input>
             </Form.Item>
-            <Form.Item label="Description " name="description" rules={[{required: true, message: "description  khong de trong"}]}>
+            <Form.Item label="Description" name="description" rules={[{required: true, message: "description  khong de trong"}]}>
                 <Input placeholder="Description "></Input>
+            </Form.Item>
+             <Form.Item label="Date" name="date" rules={[{required: true, message: "date  khong de trong"}]}>
+                <DatePicker style={{width: "100%"}}></DatePicker>
             </Form.Item>
             <Form.Item name="isActive" valuePropName="checked">
                 <Checkbox>Còn</Checkbox>
             </Form.Item>
+            
             <Button type="default" htmlType="submit" loading={mutation.isPending}>{mutation.isPending ? "Đang thêm..." : "Thêm"}</Button>
         </Form>
       </div>  
