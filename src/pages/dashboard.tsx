@@ -1,9 +1,11 @@
 import { Toaster } from "react-hot-toast";
-import { Link, Route, Routes } from "react-router-dom";
-import { Signin } from "./signin";
-import { Signup } from "./signup";
-import CateList from "./list";
-import Addcategories from "./formAdd";
+import { Link,Navigate, Route, Routes } from "react-router-dom";
+// import { Signin } from "./signin";
+// import { Signup } from "./signup";
+// import CateList from "./list";
+import AddStories  from "./formAdd";
+import StoriesList from "./list";
+
 const Dashboard = () => {
     return(
         <>
@@ -17,10 +19,10 @@ const Dashboard = () => {
             <Link to="#" className="hover:text-gray-200">
               Trang chủ
             </Link>
-            <Link to="/categories" className="hover:text-gray-200">
+            <Link to="/stories" className="hover:text-gray-200">
               Danh sách
             </Link>
-            <Link to="/addcategories" className="hover:text-gray-200">
+            <Link to="/add" className="hover:text-gray-200">
               Thêm mới
             </Link>
           </div>
@@ -41,11 +43,11 @@ const Dashboard = () => {
         <h1 className="text-4xl font-bold mb-4">Chào mừng đến với WEB2091</h1>
       </div>
       <Routes>
-        <Route path="/signin" element={<Signin/>}></Route>
-        <Route path="/signup" element={<Signup/>}></Route>
-        <Route path="/categories" element={<CateList/>}></Route>
-        <Route path="/addcategories" element={<Addcategories/>}></Route>
-
+        {/* <Route path="/signin" element={<Signin/>}></Route>
+        <Route path="/signup" element={<Signup/>}></Route> */}
+        <Route path="/" element={<Navigate to="/stories" />}></Route>
+        <Route path="/stories" element={<StoriesList></StoriesList>}></Route>
+        <Route path="/add" element={<AddStories></AddStories>}></Route>
       </Routes>
 
       <Toaster />
