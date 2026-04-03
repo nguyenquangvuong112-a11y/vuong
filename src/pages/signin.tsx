@@ -1,45 +1,48 @@
-// import { Input, Button, Form } from 'antd';
-// import toast from 'react-hot-toast';
+import { useMutation } from "@tanstack/react-query";
+import { Button, Form, Input } from "antd";
+import toast from "react-hot-toast";
+import { useAuthStore } from "../stores/useAuthStore";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-// type FormType = {
-//   username?: string;
-//   password?: string;
-//   confirmPass?: string;
-// };
 
-// export const Signin = () =>{
-//     const onFinish = (values: FormType) => {
-//         toast.success("Bạn vừa submit")
-//         console.log(values)
-//     }
-//     const onFinishFailed = (errorInfo: unknown) => {
-//         toast.error(" Submit lỗi")
-//         console.log(errorInfo)
-//     }
-//     return(
-//         <div>
-//             <h1>Đăng nhập</h1>
-//             <Form name='login' layout='vertical' onFinish={onFinish} onFinishFailed={onFinishFailed}>
-//                 <Form.Item label="Email" name="email" rules={[{ required: true, message: "email khong de trong"}]}>
-//                     <Input placeholder='email'></Input>
-//                 </Form.Item>
-//                 <Form.Item label="Password" name="password" rules={[{ required: true, message: "password khong de trong" }]}>
-//                     <Input.Password placeholder='password'></Input.Password>
-//                 </Form.Item>
-//                 <Form.Item label="ConfirmPass" name="confirmPass" dependencies={["password"]} rules={[{ required: true, message: "password khong de trong" },
-//                     ({getFieldValue}) =>({
-//                         validator(_, value) {
-//                             if(!value || getFieldValue("password") === value){
-//                                 return Promise.resolve();
-//                             }
-//                             return Promise.reject(new Error( "mat khau khong khop"))
-//                         },
-//                     })
-//                 ]}>
-//                     <Input.Password placeholder='nhập lại pass'></Input.Password>
-//                 </Form.Item>
-//                 <Button type="default" htmlType='submit'>Submit</Button>
-//             </Form>
-//         </div>
-//     )
-// }
+const Signin = () => {
+    const { setUser } = useAuthStore();
+    const navigate = useNavigate()
+    const { mutate, isPending } = useMutation({
+        mutationFn: async (values: any) => {
+            return await axios.post(`http://localhost:3000/login`,{
+                email: values.email,
+                password: values.password
+            })
+        },
+        onSuccess: ({ data }) => {
+            setUser({
+                name: data.user.name,
+                avatar: data.user.avatar || ""
+            })
+            localStorage.setItem("token", data.accessToken)
+            toast.success("dang nhap thanh cong")
+            navigate("/stories")
+        },
+        onError: () => {
+            toast.error("sai email hoac mat khau")
+        }
+    })
+    const onFinish = (data: any) => {
+        mutate(data)
+    }
+
+    return (
+        <Form onFinish={onFinish} layout="vertical">
+            <Form.Item name="email" label="Email">
+                <Input></Input>
+            </Form.Item>
+            <Form.Item name="password" label="Pass">
+                <Input.Password></Input.Password>
+            </Form.Item>
+            <Button htmlType="submit" type="primary" loading={isPending}>Dang nhap</Button>
+        </Form>
+    )
+}
+export default Signin

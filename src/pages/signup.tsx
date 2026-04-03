@@ -1,52 +1,55 @@
-// import { Input, Button, Form } from 'antd';
-// import toast from 'react-hot-toast';
-// type FormType = {
-//   username?: string;
-//   email?: string;
-//   phone?: string;
-//   password?: string;
-//   confirmPass?: string;
-// };
 
-// export const Signup = () =>{
-//     const onFinish = (values: FormType) => {
-//         toast.success("Bạn vừa submit")
-//         console.log(values)
-//     }
-//     const onFinishFailed = (errorInfo: unknown) => {
-//         toast.error(" Submit lỗi")
-//         console.log(errorInfo)
-//     }
-//     return(
-//         <div>
-//             <h1>Đăng ký</h1>
-//             <Form name='login' layout='vertical' onFinish={onFinish} onFinishFailed={onFinishFailed}>
-//                  <Form.Item label="username" name="username" rules={[{ required: true, message: "username khong de trong" }]}>
-//                     <Input placeholder='username'></Input>
-//                 </Form.Item>
-//                 <Form.Item label="Email" name="email" rules={[{ required: true, message: "email khong de trong"}, {type: 'email', message: "Email phải đúng định dạng"}]}>
-//                     <Input placeholder='email'></Input>
-//                 </Form.Item>
-//                 <Form.Item label="phone" name="phone" rules={[{ required: true, message: "phone khong de trong" }]}>
-//                     <Input placeholder='phone'></Input>
-//                 </Form.Item>
-//                 <Form.Item label="Password" name="password" rules={[{ required: true, message: "password khong de trong" }, {min: 6, message:"Password phải đúng 6 ký tự"}]}>
-//                     <Input.Password placeholder='password'></Input.Password>
-//                 </Form.Item>
-//                 <Form.Item label="ConfirmPass" name="confirmPass" dependencies={["password"]} rules={[{ required: true, message: "password khong de trong" },
-//                     ({getFieldValue}) =>({
-//                         validator(_, value) {
-//                             if(!value || getFieldValue("password") === value){
-//                                 return Promise.resolve();
-//                             }
-//                             return Promise.reject(new Error( "mat khau khong khop"))
-//                         },
-//                     })
-//                 ]}>
-//                     <Input.Password placeholder='nhập lại pass'></Input.Password>
-//                 </Form.Item>
-//                 <Button type="default" htmlType='submit'>Submit</Button>
-//             </Form>
-//         </div>
-//     )
-// }
+import { useMutation } from "@tanstack/react-query"
+import { Button, Form, Input } from "antd"
+import toast from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
+
+import { useAuthStore } from "../stores/useAuthStore"
+import axios from "axios"
+
+
+const SignUp = () => {
+    const { setUser } = useAuthStore()
+    const navigate = useNavigate()
+    const [form] = Form.useForm()
+    const { mutate, isPending } = useMutation({
+        mutationFn: async (values: any) => {
+            const res = await axios.post(`http://localhost:3000/register`, values)
+            return res
+        },
+        onSuccess: (res) => {
+            setUser({
+                name: res.data.user.name,
+                avatar: res.data.user.avatar || ""
+            })
+            localStorage.setItem("token", res.data.accessToken)
+            toast.success("đăng kí thanh cong")
+            navigate("/stories")
+            form.resetFields()
+        },
+        onError: (error: any) => {
+            toast.error(error || "dang ki khong than cong")
+        }
+    })
+    const onFinish = (data: any) => {
+        mutate(data)
+    }
+    return (
+        <Form onFinish={onFinish} layout="vertical" form={form}>
+            <Form.Item label="Name" name="name">
+                <Input placeholder="Name"></Input>
+            </Form.Item>
+            <Form.Item label="Email" name="email" rules={[{ type: "email", message: "email ddungs dinh dang" }]}>
+                <Input placeholder="email"></Input>
+            </Form.Item>
+            <Form.Item label="Avatar" name="avatar">
+                <Input placeholder="avatar"></Input>
+            </Form.Item>
+            <Form.Item label="Pass" name="password">
+                <Input.Password placeholder="password"></Input.Password>
+            </Form.Item>
+            <Button type="primary" htmlType="submit" loading={isPending}>Dawng ki</Button>
+        </Form>
+    )
+}
+export default SignUp
