@@ -56,6 +56,20 @@
       "name": "nguyễn quang vượng",
       "avatar": "eeee",
       "id": 1
+    },
+    {
+      "email": "v@email.com",
+      "password": "$2a$10$qGpK/w34jweVjv5T/C6OWuAMHdjo3cQHDY3g.EDZsIfcFv7aMx70S",
+      "name": "vvvvv",
+      "avatar": "wwwwww",
+      "id": 2
+    },
+    {
+      "email": "v@gmail.com",
+      "password": "$2a$10$JAudzL93VfK75SUNqZAnd.Su8NRxmCBczrA/WTtE/IJxXnQ2x7RZG",
+      "name": "V",
+      "avatar": "rrrrr",
+      "id": 3
     }
   ]
 }

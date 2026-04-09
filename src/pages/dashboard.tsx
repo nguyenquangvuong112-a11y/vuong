@@ -45,15 +45,6 @@ const Dashboard = () => {
                             </>
                         )}
                     </div>
-
-          <div className="hidden md:flex items-center space-x-6">
-            <Link to="/signin" className="hover:text-gray-200">
-              Đăng nhập
-            </Link>
-            <Link to="/signup" className="hover:text-gray-200">
-              Đăng ký
-            </Link>
-          </div>
         </div>
       </nav>
 

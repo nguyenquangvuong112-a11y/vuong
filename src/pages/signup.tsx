@@ -39,7 +39,7 @@ const SignUp = () => {
             <Form.Item label="Name" name="name">
                 <Input placeholder="Name"></Input>
             </Form.Item>
-            <Form.Item label="Email" name="email" rules={[{ type: "email", message: "email ddungs dinh dang" }]}>
+            <Form.Item label="Email" name="email" rules={[{ type: "email", message: "email dung dinh dang" }]}>
                 <Input placeholder="email"></Input>
             </Form.Item>
             <Form.Item label="Avatar" name="avatar">
@@ -48,7 +48,7 @@ const SignUp = () => {
             <Form.Item label="Pass" name="password">
                 <Input.Password placeholder="password"></Input.Password>
             </Form.Item>
-            <Button type="primary" htmlType="submit" loading={isPending}>Dawng ki</Button>
+            <Button type="primary" htmlType="submit" loading={isPending}>Dang ki</Button>
         </Form>
     )
 }
